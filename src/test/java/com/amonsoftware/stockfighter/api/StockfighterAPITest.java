@@ -1,18 +1,11 @@
 package com.amonsoftware.stockfighter.api;
 
-import com.amonsoftware.stockfighter.model.Orderbook;
-import com.amonsoftware.stockfighter.model.StocksOnAVenue;
-import com.amonsoftware.stockfighter.model.Symbol;
-import com.amonsoftware.stockfighter.model.VenueStatus;
-import org.hamcrest.CoreMatchers;
-import org.hamcrest.Matcher;
+import com.amonsoftware.stockfighter.model.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.concurrent.CompletableFuture;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
@@ -64,4 +57,39 @@ public class StockfighterAPITest {
         assertNotNull(orderbook.getTimestamp());
     }
 
+    @Test
+    public void testPlaceNewOrder() throws Exception {
+        NewOrderRequest orderRequest = new NewOrderRequest();
+        orderRequest.setAccount("EXB123456");
+        orderRequest.setVenue("TESTEX");
+        orderRequest.setStock("FOOBAR");
+        orderRequest.setPrice(1234);
+        orderRequest.setQuantity(100);
+        orderRequest.setDirection(OrderDirection.BUY);
+        orderRequest.setOrderType(OrderType.LIMIT_ORDER);
+        NewOrderResponse newOrder = stockfighterAPI.placeNewOrder(orderRequest).get();
+        assertNotNull(newOrder);
+        assertTrue(newOrder.isOk());
+        assertNull(newOrder.getError());
+        assertThat(newOrder.getAccount(), is("EXB123456"));
+        assertThat(newOrder.getVenue(), is("TESTEX"));
+        assertThat(newOrder.getSymbol(), is("FOOBAR"));
+        assertThat(newOrder.getDirection(), is(OrderDirection.BUY));
+    }
+
+    @Test
+    public void testPlaceNewOrder_WrongAccount() throws Exception {
+        NewOrderRequest orderRequest = new NewOrderRequest();
+        orderRequest.setAccount("dsdsds");
+        orderRequest.setVenue("TESTEX");
+        orderRequest.setStock("FOOBAR");
+        orderRequest.setPrice(1234);
+        orderRequest.setQuantity(100);
+        orderRequest.setDirection(OrderDirection.BUY);
+        orderRequest.setOrderType(OrderType.LIMIT_ORDER);
+        NewOrderResponse newOrder = stockfighterAPI.placeNewOrder(orderRequest).get();
+        assertNotNull(newOrder);
+        assertFalse(newOrder.isOk());
+        assertThat(newOrder.getError(), is("Not authorized to trade on that account!"));
+    }
 }

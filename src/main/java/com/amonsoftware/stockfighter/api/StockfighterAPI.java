@@ -1,9 +1,6 @@
 package com.amonsoftware.stockfighter.api;
 
-import com.amonsoftware.stockfighter.model.Heartbeat;
-import com.amonsoftware.stockfighter.model.Orderbook;
-import com.amonsoftware.stockfighter.model.StocksOnAVenue;
-import com.amonsoftware.stockfighter.model.VenueStatus;
+import com.amonsoftware.stockfighter.model.*;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -21,19 +18,36 @@ public class StockfighterAPI {
     }
 
     public CompletableFuture<Heartbeat> getHeartbeat() {
-        return CompletableFuture.supplyAsync(() -> restTemplate.getForObject(UriComponentsBuilder.fromHttpUrl(BASE_URL).path("heartbeat").toUriString(), Heartbeat.class));
+        return CompletableFuture.supplyAsync(
+                () -> restTemplate.getForObject(UriComponentsBuilder
+                        .fromHttpUrl(BASE_URL).path("heartbeat").toUriString(), Heartbeat.class));
 
     }
 
     public CompletableFuture<VenueStatus> getVenueStatus(String venue) {
-        return CompletableFuture.supplyAsync(() -> restTemplate.getForObject(UriComponentsBuilder.fromHttpUrl(BASE_URL).path("venues/{venue}/heartbeat").buildAndExpand(venue).toUriString(), VenueStatus.class));
+        return CompletableFuture.supplyAsync(
+                () -> restTemplate.getForObject(UriComponentsBuilder
+                        .fromHttpUrl(BASE_URL).path("venues/{venue}/heartbeat").buildAndExpand(venue).toUriString(), VenueStatus.class));
     }
 
     public CompletableFuture<StocksOnAVenue> getStocksOnAVenue(String venue) {
-        return CompletableFuture.supplyAsync(() -> restTemplate.getForObject(UriComponentsBuilder.fromHttpUrl(BASE_URL).path("/venues/{venue}/stocks").buildAndExpand(venue).toUriString(), StocksOnAVenue.class));
+        return CompletableFuture.supplyAsync(
+                () -> restTemplate.getForObject(UriComponentsBuilder
+                        .fromHttpUrl(BASE_URL).path("/venues/{venue}/stocks").buildAndExpand(venue).toUriString(), StocksOnAVenue.class));
     }
 
     public CompletableFuture<Orderbook> getOrderbookForStock(String venue, String stock) {
-        return CompletableFuture.supplyAsync(() -> restTemplate.getForObject(UriComponentsBuilder.fromHttpUrl(BASE_URL).path("/venues/{venue}/stocks/{stock}").buildAndExpand(venue, stock).toUriString(), Orderbook.class));
+        return CompletableFuture.supplyAsync(
+                () -> restTemplate.getForObject(UriComponentsBuilder
+                        .fromHttpUrl(BASE_URL).path("/venues/{venue}/stocks/{stock}").buildAndExpand(venue, stock).toUriString(), Orderbook.class));
+    }
+
+    public CompletableFuture<NewOrderResponse> placeNewOrder(NewOrderRequest orderRequest) {
+        return CompletableFuture.supplyAsync(
+                () -> restTemplate.postForObject(UriComponentsBuilder
+                        .fromHttpUrl(BASE_URL)
+                        .path("/venues/{venue}/stocks/{stock}/orders")
+                        .buildAndExpand(orderRequest.getVenue(), orderRequest.getStock()).toUriString(), orderRequest, NewOrderResponse.class)
+        );
     }
 }
