@@ -92,4 +92,13 @@ public class StockfighterAPITest {
         assertFalse(newOrder.isOk());
         assertThat(newOrder.getError(), is("Not authorized to trade on that account!"));
     }
+
+    @Test
+    public void testGetQuoteForStock() throws Exception {
+        Quote quote = stockfighterAPI.getQuoteForStock("TESTEX", "FOOBAR").get();
+        assertNotNull(quote);
+        assertTrue(quote.isOk());
+        assertThat(quote.getVenue(), is("TESTEX"));
+        assertThat(quote.getSymbol(), is("FOOBAR"));
+    }
 }
