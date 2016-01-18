@@ -17,6 +17,7 @@ public class HeaderRequestInterceptor implements ClientHttpRequestInterceptor {
         HttpRequest wrapper = new HttpRequestWrapper(httpRequest);
         wrapper.getHeaders().add(X_STARFIGHTER_AUTHORIZATION, API_KEY);
         wrapper.getHeaders().add(HttpHeaders.ACCEPT, "application/json");
+        wrapper.getHeaders().add("Cookie",API_KEY);
         return clientHttpRequestExecution.execute(wrapper, bytes);
     }
 }

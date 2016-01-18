@@ -1,5 +1,6 @@
 package com.amonsoftware.stockfighter.api;
 
+import com.amonsoftware.stockfighter.model.InstanceResponse;
 import com.amonsoftware.stockfighter.model.LevelResponse;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.web.client.RestTemplate;
@@ -23,6 +24,15 @@ public class GameMasterAPI {
                         .fromHttpUrl(BASE_URL)
                         .path("/levels/{level}")
                         .buildAndExpand(levelName).toUriString(), null, LevelResponse.class)
+        );
+    }
+
+    public CompletableFuture<InstanceResponse> getInstanceDetails(Integer instance) {
+        return CompletableFuture.supplyAsync(
+                () -> restTemplate.getForObject(UriComponentsBuilder
+                        .fromHttpUrl(BASE_URL)
+                        .path("/instances/{instance}")
+                        .buildAndExpand(instance).toUriString(), InstanceResponse.class)
         );
     }
 }
