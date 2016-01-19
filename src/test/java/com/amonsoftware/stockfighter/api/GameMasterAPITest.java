@@ -6,14 +6,16 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 public class GameMasterAPITest {
+    private static final String API_KEY = "6c0f27076afa7582a81541544105c0f6b4b055a5";
     private GameMasterAPI gameMasterAPI;
 
     @Before
     public void setUp() throws Exception {
-        gameMasterAPI = new GameMasterAPI();
+        gameMasterAPI = new GameMasterAPI(API_KEY);
     }
 
     @After

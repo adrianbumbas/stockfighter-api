@@ -11,11 +11,12 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
 public class StockfighterAPITest {
+    private static final String API_KEY = "6c0f27076afa7582a81541544105c0f6b4b055a5";
     private StockfighterAPI stockfighterAPI;
 
     @Before
     public void setUp() throws Exception {
-        stockfighterAPI = new StockfighterAPI();
+        stockfighterAPI = new StockfighterAPI(API_KEY);
 
     }
 
