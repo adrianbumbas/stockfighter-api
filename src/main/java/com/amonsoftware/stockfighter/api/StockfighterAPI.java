@@ -56,4 +56,10 @@ public class StockfighterAPI {
                 () -> restTemplate.getForObject(UriComponentsBuilder
                         .fromHttpUrl(BASE_URL).path("/venues/{venue}/stocks/{stock}/quote").buildAndExpand(venue, stock).toUriString(), Quote.class));
     }
+
+    public CompletableFuture<OrderStatusResponse> getOrderStatus(Integer orderId, String venue, String stock) {
+        return CompletableFuture.supplyAsync(
+                () -> restTemplate.getForObject(UriComponentsBuilder
+                        .fromHttpUrl(BASE_URL).path("/venues/{venue}/stocks/{stock}/orders/{orderId}").buildAndExpand(venue, stock, orderId).toUriString(), OrderStatusResponse.class));
+    }
 }

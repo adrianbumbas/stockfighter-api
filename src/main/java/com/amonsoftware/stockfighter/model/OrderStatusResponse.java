@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class NewOrderResponse {
+public class OrderStatusResponse {
     private boolean ok;
     private String symbol;
     private String venue;
@@ -14,11 +14,11 @@ public class NewOrderResponse {
     @JsonProperty("originalQty")
     private Integer originalQuantity;
     @JsonProperty("qty")
-    private Integer outstandingQuantity;
     private Integer price;
+    @JsonProperty("orderType")
     private OrderType type;
-    private String account;
     private Integer id;
+    private String account;
     @JsonProperty("ts")
     private String timestamp;
     private List<OrderFill> fills;

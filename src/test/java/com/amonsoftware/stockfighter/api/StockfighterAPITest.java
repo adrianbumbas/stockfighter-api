@@ -101,4 +101,25 @@ public class StockfighterAPITest {
         assertThat(quote.getVenue(), is("TESTEX"));
         assertThat(quote.getSymbol(), is("FOOBAR"));
     }
+
+    @Test
+    public void testGetOrderStatus() throws Exception {
+        //place new order
+        NewOrderRequest orderRequest = new NewOrderRequest();
+        orderRequest.setAccount("EXB123456");
+        orderRequest.setVenue("TESTEX");
+        orderRequest.setStock("FOOBAR");
+        orderRequest.setPrice(1234);
+        orderRequest.setQuantity(100);
+        orderRequest.setDirection(OrderDirection.BUY);
+        orderRequest.setOrderType(OrderType.LIMIT_ORDER);
+        NewOrderResponse newOrder = stockfighterAPI.placeNewOrder(orderRequest).get();
+
+        //get status about order
+        OrderStatusResponse response = stockfighterAPI.getOrderStatus(newOrder.getId(), newOrder.getVenue(), newOrder.getSymbol()).get();
+        assertNotNull(response);
+        assertTrue(response.isOk());
+        assertThat(response.getVenue(), is("TESTEX"));
+        assertThat(response.getSymbol(), is("FOOBAR"));
+    }
 }
