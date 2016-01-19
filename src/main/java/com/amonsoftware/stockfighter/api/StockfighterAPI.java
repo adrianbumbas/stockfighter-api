@@ -13,8 +13,8 @@ public class StockfighterAPI {
 
     private RestTemplate restTemplate = new RestTemplate();
 
-    public StockfighterAPI() {
-        restTemplate.setInterceptors(Collections.<ClientHttpRequestInterceptor>singletonList(new HeaderRequestInterceptor()));
+    public StockfighterAPI(String apiKey) {
+        restTemplate.setInterceptors(Collections.<ClientHttpRequestInterceptor>singletonList(new HeaderRequestInterceptor(apiKey)));
     }
 
     public CompletableFuture<Heartbeat> getHeartbeat() {

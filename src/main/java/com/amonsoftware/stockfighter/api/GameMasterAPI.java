@@ -14,8 +14,8 @@ public class GameMasterAPI {
 
     private RestTemplate restTemplate = new RestTemplate();
 
-    public GameMasterAPI() {
-        restTemplate.setInterceptors(Collections.<ClientHttpRequestInterceptor>singletonList(new HeaderRequestInterceptor()));
+    public GameMasterAPI(String apiKey) {
+        restTemplate.setInterceptors(Collections.<ClientHttpRequestInterceptor>singletonList(new HeaderRequestInterceptor(apiKey)));
     }
 
     public CompletableFuture<LevelResponse> startLevel(String levelName) {
