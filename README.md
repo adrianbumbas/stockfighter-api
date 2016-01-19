@@ -1,4 +1,4 @@
-# Java API for the [StockFighter](https://www.stockfighter.io) Game
+# Java 8 API for the [StockFighter](https://www.stockfighter.io) Game
 It includes both the [documented API](https://starfighter.readme.io/v1.0/docs) and the game master API. All the calls are wrapped into a CompletableFuture.
 
 ## Installation
