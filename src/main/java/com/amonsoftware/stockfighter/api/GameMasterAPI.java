@@ -8,10 +8,12 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class GameMasterAPI {
     private static final String BASE_URL = "https://www.stockfighter.io/gm/";
-
+    private final Executor executorService = Executors.newFixedThreadPool(10);
     private RestTemplate restTemplate = new RestTemplate();
 
     public GameMasterAPI(String apiKey) {
@@ -23,8 +25,8 @@ public class GameMasterAPI {
                 () -> restTemplate.postForObject(UriComponentsBuilder
                         .fromHttpUrl(BASE_URL)
                         .path("/levels/{level}")
-                        .buildAndExpand(levelName).toUriString(), null, LevelResponse.class)
-        );
+                        .buildAndExpand(levelName)
+                        .toUriString(), null, LevelResponse.class), executorService);
     }
 
     public CompletableFuture<InstanceResponse> getInstanceDetails(Integer instance) {
@@ -32,7 +34,7 @@ public class GameMasterAPI {
                 () -> restTemplate.getForObject(UriComponentsBuilder
                         .fromHttpUrl(BASE_URL)
                         .path("/instances/{instance}")
-                        .buildAndExpand(instance).toUriString(), InstanceResponse.class)
-        );
+                        .buildAndExpand(instance)
+                        .toUriString(), InstanceResponse.class), executorService);
     }
 }
