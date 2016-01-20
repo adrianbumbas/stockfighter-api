@@ -1,6 +1,7 @@
 package com.amonsoftware.stockfighter.api;
 
 import com.amonsoftware.stockfighter.model.*;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -61,5 +62,11 @@ public class StockfighterAPI {
         return CompletableFuture.supplyAsync(
                 () -> restTemplate.getForObject(UriComponentsBuilder
                         .fromHttpUrl(BASE_URL).path("/venues/{venue}/stocks/{stock}/orders/{orderId}").buildAndExpand(venue, stock, orderId).toUriString(), OrderStatusResponse.class));
+    }
+
+    public CompletableFuture<OrderStatusResponse> cancelOrder(Integer orderId, String venue, String stock) {
+        return CompletableFuture.supplyAsync(
+                () -> restTemplate.exchange(UriComponentsBuilder
+                        .fromHttpUrl(BASE_URL).path("/venues/{venue}/stocks/{stock}/orders/{orderId}").buildAndExpand(venue, stock, orderId).toUriString(), HttpMethod.DELETE, null, OrderStatusResponse.class).getBody());
     }
 }
