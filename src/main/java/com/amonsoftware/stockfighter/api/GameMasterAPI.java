@@ -2,6 +2,8 @@ package com.amonsoftware.stockfighter.api;
 
 import com.amonsoftware.stockfighter.model.InstanceResponse;
 import com.amonsoftware.stockfighter.model.LevelResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -13,6 +15,7 @@ import java.util.concurrent.Executors;
 
 public class GameMasterAPI {
     private static final String BASE_URL = "https://www.stockfighter.io/gm/";
+    private static final Logger log = LoggerFactory.getLogger(GameMasterAPI.class);
     private final Executor executorService = Executors.newFixedThreadPool(10);
     private RestTemplate restTemplate = new RestTemplate();
 
@@ -26,7 +29,8 @@ public class GameMasterAPI {
                         .fromHttpUrl(BASE_URL)
                         .path("/levels/{level}")
                         .buildAndExpand(levelName)
-                        .toUriString(), null, LevelResponse.class), executorService);
+                        .toUriString(), null, LevelResponse.class), executorService)
+                .whenComplete((levelResponse, throwable) -> log.debug("Start level response: '{}'", levelResponse));
     }
 
     public CompletableFuture<InstanceResponse> getInstanceDetails(Integer instance) {
@@ -35,6 +39,7 @@ public class GameMasterAPI {
                         .fromHttpUrl(BASE_URL)
                         .path("/instances/{instance}")
                         .buildAndExpand(instance)
-                        .toUriString(), InstanceResponse.class), executorService);
+                        .toUriString(), InstanceResponse.class), executorService)
+                .whenComplete((instanceResponse, throwable) -> log.debug("Get instance detail response: '{}'", instanceResponse));
     }
 }
