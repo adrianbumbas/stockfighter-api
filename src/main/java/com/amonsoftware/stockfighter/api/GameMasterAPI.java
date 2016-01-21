@@ -1,6 +1,6 @@
 package com.amonsoftware.stockfighter.api;
 
-import com.amonsoftware.stockfighter.model.InstanceResponse;
+import com.amonsoftware.stockfighter.model.Instance;
 import com.amonsoftware.stockfighter.model.LevelResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,13 +33,13 @@ public class GameMasterAPI {
                 .whenComplete((levelResponse, throwable) -> log.debug("Start level response: '{}'", levelResponse));
     }
 
-    public CompletableFuture<InstanceResponse> getInstanceDetails(Integer instance) {
+    public CompletableFuture<Instance> getInstanceDetails(Integer instance) {
         return CompletableFuture.supplyAsync(
                 () -> restTemplate.getForObject(UriComponentsBuilder
                         .fromHttpUrl(BASE_URL)
                         .path("/instances/{instance}")
                         .buildAndExpand(instance)
-                        .toUriString(), InstanceResponse.class), executorService)
+                        .toUriString(), Instance.class), executorService)
                 .whenComplete((instanceResponse, throwable) -> log.debug("Get instance detail response: '{}'", instanceResponse));
     }
 }

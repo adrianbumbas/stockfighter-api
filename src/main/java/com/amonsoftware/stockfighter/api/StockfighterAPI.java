@@ -83,23 +83,33 @@ public class StockfighterAPI {
                 .whenComplete((quote, throwable) -> log.debug("Get quote for stock response: '{}'", quote));
     }
 
-    public CompletableFuture<OrderStatusResponse> getOrderStatus(Integer orderId, String venue, String stock) {
+    public CompletableFuture<OrderStatus> getOrderStatus(Integer orderId, String venue, String stock) {
         return CompletableFuture.supplyAsync(
                 () -> restTemplate.getForObject(UriComponentsBuilder
                         .fromHttpUrl(BASE_URL)
                         .path("/venues/{venue}/stocks/{stock}/orders/{orderId}")
                         .buildAndExpand(venue, stock, orderId)
-                        .toUriString(), OrderStatusResponse.class), executorService)
+                        .toUriString(), OrderStatus.class), executorService)
                 .whenComplete((orderStatusResponse, throwable) -> log.debug("Get order status response: '{}'", orderStatusResponse));
     }
 
-    public CompletableFuture<OrderStatusResponse> cancelOrder(Integer orderId, String venue, String stock) {
+    public CompletableFuture<OrderStatus> cancelOrder(Integer orderId, String venue, String stock) {
         return CompletableFuture.supplyAsync(
                 () -> restTemplate.exchange(UriComponentsBuilder
                         .fromHttpUrl(BASE_URL)
                         .path("/venues/{venue}/stocks/{stock}/orders/{orderId}")
                         .buildAndExpand(venue, stock, orderId)
-                        .toUriString(), HttpMethod.DELETE, null, OrderStatusResponse.class).getBody(), executorService)
+                        .toUriString(), HttpMethod.DELETE, null, OrderStatus.class).getBody(), executorService)
                 .whenComplete((orderStatusResponse, throwable) -> log.debug("Cancel order response: '{}'", orderStatusResponse));
+    }
+
+    public CompletableFuture<OrdersStatusList> getStatusForAllOrders(String venue, String account) {
+        return CompletableFuture.supplyAsync(
+                () -> restTemplate.getForObject(UriComponentsBuilder
+                        .fromHttpUrl(BASE_URL)
+                        .path("/venues/{venue}/accounts/{account}/orders")
+                        .buildAndExpand(venue, account)
+                        .toUriString(), OrdersStatusList.class), executorService)
+                .whenComplete((ordersStatusList, throwable) -> log.debug("Status for all orders response: '{}'", ordersStatusList));
     }
 }

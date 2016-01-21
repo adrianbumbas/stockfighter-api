@@ -1,6 +1,6 @@
 package com.amonsoftware.stockfighter.api;
 
-import com.amonsoftware.stockfighter.model.InstanceResponse;
+import com.amonsoftware.stockfighter.model.Instance;
 import com.amonsoftware.stockfighter.model.LevelResponse;
 import org.junit.After;
 import org.junit.Before;
@@ -33,9 +33,9 @@ public class GameMasterAPITest {
     public void testGetInstanceDetails() throws Exception {
         LevelResponse level = gameMasterAPI.startLevel("chock_a_block").get();
         assertTrue(level.isOk());
-        InstanceResponse instanceResponse = gameMasterAPI.getInstanceDetails(level.getInstanceId()).get();
-        assertTrue(instanceResponse.isOk());
+        Instance instance = gameMasterAPI.getInstanceDetails(level.getInstanceId()).get();
+        assertTrue(instance.isOk());
         //do not expect a flashMessage message yet
-        assertNull(instanceResponse.getFlashMessage());
+        assertNull(instance.getFlashMessage());
     }
 }

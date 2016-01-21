@@ -4,12 +4,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class InstanceResponse {
+public class Instance {
     private boolean ok;
     private boolean done;
     private Integer id;
     private String state;
     @JsonProperty("flash")
     private FlashMessage flashMessage;
-    private Details details;
+    private InstanceDetails instanceDetails;
 }

@@ -117,7 +117,7 @@ public class StockfighterAPITest {
         NewOrderResponse newOrder = stockfighterAPI.placeNewOrder(orderRequest).get();
 
         //get status about order
-        OrderStatusResponse response = stockfighterAPI.getOrderStatus(newOrder.getId(), newOrder.getVenue(), newOrder.getSymbol()).get();
+        OrderStatus response = stockfighterAPI.getOrderStatus(newOrder.getId(), newOrder.getVenue(), newOrder.getSymbol()).get();
         assertNotNull(response);
         assertTrue(response.isOk());
         assertThat(response.getVenue(), is("TESTEX"));
@@ -138,10 +138,18 @@ public class StockfighterAPITest {
         NewOrderResponse newOrder = stockfighterAPI.placeNewOrder(orderRequest).get();
 
         //cancel the order
-        OrderStatusResponse response = stockfighterAPI.cancelOrder(newOrder.getId(), newOrder.getVenue(), newOrder.getSymbol()).get();
+        OrderStatus response = stockfighterAPI.cancelOrder(newOrder.getId(), newOrder.getVenue(), newOrder.getSymbol()).get();
         assertNotNull(response);
         assertTrue(response.isOk());
         assertThat(response.getVenue(), is("TESTEX"));
         assertThat(response.getSymbol(), is("FOOBAR"));
+    }
+
+    @Test
+    public void testGetStatusForAllOrders() throws Exception {
+        OrdersStatusList ordersStatusList = stockfighterAPI.getStatusForAllOrders("TESTEX", "EXB123456").get();
+        assertNotNull(ordersStatusList);
+        assertTrue(ordersStatusList.isOk());
+        assertThat(ordersStatusList.getVenue(), is("TESTEX"));
     }
 }
