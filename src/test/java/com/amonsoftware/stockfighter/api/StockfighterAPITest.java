@@ -44,7 +44,7 @@ public class StockfighterAPITest {
     public void testGetStocksOnAVenue() throws Exception {
         StocksOnAVenue stocksOnAVenue = stockfighterAPI.getStocksOnAVenue("TESTEX").get();
         assertNotNull(stocksOnAVenue);
-        assertThat(stocksOnAVenue.getSymbols(),is(Collections.singletonList(new Symbol("Foreign Owned Occluded Bridge Architecture Resources","FOOBAR"))));
+        assertThat(stocksOnAVenue.getSymbols(), is(Collections.singletonList(new Symbol("Foreign Owned Occluded Bridge Architecture Resources", "FOOBAR"))));
 
     }
 
@@ -148,6 +148,14 @@ public class StockfighterAPITest {
     @Test
     public void testGetStatusForAllOrders() throws Exception {
         OrdersStatusList ordersStatusList = stockfighterAPI.getStatusForAllOrders("TESTEX", "EXB123456").get();
+        assertNotNull(ordersStatusList);
+        assertTrue(ordersStatusList.isOk());
+        assertThat(ordersStatusList.getVenue(), is("TESTEX"));
+    }
+
+    @Test
+    public void testGetStatusForAllOrdersInAStock() throws Exception {
+        OrdersStatusList ordersStatusList = stockfighterAPI.getStatusForAllOrdersInAStock("TESTEX", "EXB123456", "FOOBAR").get();
         assertNotNull(ordersStatusList);
         assertTrue(ordersStatusList.isOk());
         assertThat(ordersStatusList.getVenue(), is("TESTEX"));

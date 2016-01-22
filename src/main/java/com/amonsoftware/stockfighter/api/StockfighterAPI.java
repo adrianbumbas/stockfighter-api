@@ -112,4 +112,14 @@ public class StockfighterAPI {
                         .toUriString(), OrdersStatusList.class), executorService)
                 .whenComplete((ordersStatusList, throwable) -> log.debug("Status for all orders response: '{}'", ordersStatusList));
     }
+
+    public CompletableFuture<OrdersStatusList> getStatusForAllOrdersInAStock(String venue, String account, String stock) {
+        return CompletableFuture.supplyAsync(
+                () -> restTemplate.getForObject(UriComponentsBuilder
+                        .fromHttpUrl(BASE_URL)
+                        .path("/venues/{venue}/accounts/{account}/stocks/{stock}/orders")
+                        .buildAndExpand(venue, account, stock)
+                        .toUriString(), OrdersStatusList.class), executorService)
+                .whenComplete((ordersStatusList, throwable) -> log.debug("Status for all orders in a stock response: '{}'", ordersStatusList));
+    }
 }
