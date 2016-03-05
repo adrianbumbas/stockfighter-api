@@ -1,5 +1,5 @@
 # Java 8 API for the [StockFighter](https://www.stockfighter.io) Game
-It includes both the [documented API](https://starfighter.readme.io/v1.0/docs) and the game master API. All the calls are wrapped into a CompletableFuture.
+It includes both the [documented API](https://starfighter.readme.io/v1.0/docs) and the game master API. All the REST calls are wrapped into a CompletableFuture or in a [RxJava](https://github.com/ReactiveX/RxJava) Observable.
 
 ## Installation
 
@@ -29,4 +29,11 @@ Example code to get the heartbeat
 Create a new game master API
 
     GameMasterAPI gameMasterAPI = new GameMasterAPI("your api key");
+
+Usage of the Ticker Tape Websocket API
+
+    StockfighterWSApi stockfighterWSApi = new StockfighterWSApi();
+    stockfighterWSApi.getQuoteSubscription("YOUR_VENUE", "YOUR_ACCOUNT").subscribe(quoteSubscription -> {
+                //quoteSubscription contains the quote information
+            });
        
