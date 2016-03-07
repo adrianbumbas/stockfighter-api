@@ -1,5 +1,5 @@
 # Java 8 API for the [StockFighter](https://www.stockfighter.io) Game
-It includes both the [documented API](https://starfighter.readme.io/v1.0/docs) and the game master API. All the REST calls are wrapped into a CompletableFuture or in a [RxJava](https://github.com/ReactiveX/RxJava) Observable.
+It includes both the [documented API](https://starfighter.readme.io/v1.0/docs) and the game master API. All the REST calls are wrapped into a CompletableFuture and the Websocket calls in a [RxJava](https://github.com/ReactiveX/RxJava) Observable.
 
 ## Installation
 
