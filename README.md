@@ -22,9 +22,13 @@ In order to create a new Stockfighter API object do
 
     StockfighterAPI stockfighterAPI = new StockfighterAPI("your api key");
 
-Example code to get the heartbeat
+Example code to get the heartbeat (blocking)...
 
     stockfighterAPI.getHeartbeat().get();
+
+...and nonblocking
+
+    stockfighterAPI.getHeartbeat().thenAccept(heartbeat -> //consume the response);
     
 Create a new game master API
 
